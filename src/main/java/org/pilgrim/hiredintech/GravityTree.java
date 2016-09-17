@@ -10,14 +10,14 @@ import java.util.Scanner;
 
 public class GravityTree
 {
-    static Map<Integer, TreeNode> map = new HashMap<>();
+    static Map<Long, TreeNode> map = new HashMap<>();
 
-    public static TreeNode buildTree(int[] a)
+    public static TreeNode buildTree(long[] a)
     {
         TreeNode root = null;
         for (int i = 0; i < a.length; i++)
         {
-            int val = a[i];
+            long val = a[i];
             TreeNode treeNode = map.get(val);
             if (null == treeNode)
             {
@@ -26,7 +26,7 @@ public class GravityTree
                 map.put(val, treeNode);
             }
 
-            int childVal = i + 2;
+            long childVal = i + 2;
             TreeNode treeChild = map.get(childVal);
             if (null == treeChild)
             {
@@ -53,18 +53,18 @@ public class GravityTree
     {
         Scanner in = new Scanner(System.in);
         int n = in.nextInt();
-        int[] a = new int[n - 1];
+        long[] a = new long[n - 1];
         for (int i = 0; i < n - 1; i++)
         {
-            a[i] = in.nextInt();
+            a[i] = in.nextLong();
         }
         int q = in.nextInt();
 
-        int[][] exp = new int[q][2];
+        long[][] exp = new long[q][2];
         for (int i = 0; i < q; i++)
         {
-            exp[i][0] = in.nextInt();
-            exp[i][1] = in.nextInt();
+            exp[i][0] = in.nextLong();
+            exp[i][1] = in.nextLong();
         }
 
         in.close();
@@ -73,8 +73,8 @@ public class GravityTree
 
         for (int i = 0; i < exp.length; i++)
         {
-            int u = exp[i][0];
-            int v = exp[i][1];
+            long u = exp[i][0];
+            long v = exp[i][1];
 
             long forces = 0;
 
@@ -142,10 +142,18 @@ public class GravityTree
     private static long getHeight(TreeNode from)
     {
         long height = 0;
+        if (null != from && null != from.height)
+        {
+            return from.height.longValue();
+        }
         while (null != from && null != from.parent)
         {
             from = from.parent;
             height++;
+            if (null != from.height)
+            {
+                return from.height.longValue() + height;
+            }
         }
         return height;
     }
@@ -157,6 +165,7 @@ class TreeNode
     TreeNode       parent   = null;
     long           val;
     boolean        on       = false;
+    Long           height;
 
     public boolean isOn()
     {
