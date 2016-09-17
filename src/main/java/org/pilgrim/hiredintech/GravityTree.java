@@ -103,6 +103,19 @@ public class GravityTree
     private static long getDistance(TreeNode from,
                                     TreeNode nodeU)
     {
+        Long d1 = from.distance.get(nodeU.val);
+        if (null != d1)
+        {
+            nodeU.distance.putIfAbsent(from.val, d1);
+            return d1.longValue();
+        }
+        Long d2 = nodeU.distance.get(from.val);
+        if (null != d2)
+        {
+            from.distance.putIfAbsent(nodeU.val, d1);
+            return d2.longValue();
+        }
+        
         long height1 = getHeight(from);
         long height2 = getHeight(nodeU);
 
@@ -125,6 +138,9 @@ public class GravityTree
             nodeU = nodeU.parent;
             diff += 2;
         }
+        
+        nodeU.distance.put(from.val, diff);
+        from.distance.put(nodeU.val, diff);
 
         return diff;
     }
@@ -161,11 +177,12 @@ public class GravityTree
 
 class TreeNode
 {
-    List<TreeNode> children = new ArrayList<>();
-    TreeNode       parent   = null;
-    long           val;
-    boolean        on       = false;
-    Long           height;
+    Map<Long, Long> distance = new HashMap<>();
+    List<TreeNode>  children = new ArrayList<>();
+    TreeNode        parent   = null;
+    long            val;
+    boolean         on       = false;
+    Long            height;
 
     public boolean isOn()
     {
