@@ -2,7 +2,7 @@ package org.pilgrim.base;
 
 import java.util.Stack;
 
-public class TreeSerialization2 {
+public class TreeSerialization {
 	// Encodes a tree to a single string.
 	public String serialize(TreeNode root) {
 	    if(root==null)
