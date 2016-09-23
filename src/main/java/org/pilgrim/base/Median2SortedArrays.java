@@ -98,9 +98,22 @@ public class Median2SortedArrays
     public static void main(String[] args)
     {
         Median2SortedArrays median2SortedArrays = new Median2SortedArrays();
-        int[] a1 = new int[] { 1, 8, 9, 10, 15, 16 };
-        int[] a2 = new int[] { 2, 5, 7, 9, 12, 14, 20 };
         {
+            int[] a1 = new int[] { 1, 2 };
+            int[] a2 = new int[] { 3, 4 };
+            long millis = System.currentTimeMillis();
+            for (int i = 0; i < 1; i++)
+            {
+                median2SortedArrays.findMedianSortedArrays(a1, a2);
+            }
+            System.out.println(System.currentTimeMillis() - millis);
+            double m = median2SortedArrays.findMedianSortedArrays(a1, a2);
+            System.out.println(m);
+        }
+        
+        {
+            int[] a1 = new int[] { 1, 8, 9, 10, 15, 16 };
+            int[] a2 = new int[] { 2, 5, 7, 9, 12, 14, 20 };
             long millis = System.currentTimeMillis();
             for (int i = 0; i < 100000000; i++)
             {
@@ -112,6 +125,8 @@ public class Median2SortedArrays
         }
         
         {
+            int[] a1 = new int[] { 1, 8, 9, 10, 15, 16 };
+            int[] a2 = new int[] { 2, 5, 7, 9, 12, 14, 20 };
             long millis = System.currentTimeMillis();
             for (int i = 0; i < 100000000; i++)
             {
