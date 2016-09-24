@@ -12,8 +12,6 @@ public class WordSearch
     public List<String> findWords(char[][] board,
                                   String[] words)
     {
-        //HashSet<String> result = new HashSet<String>();
-
         Trie trie = new Trie();
         for (String word : words)
         {
