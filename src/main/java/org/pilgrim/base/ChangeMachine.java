@@ -8,23 +8,23 @@ public class ChangeMachine
 {
     static public int all_comb(int sum,
                                int[] coins,
-                               Stack<Integer> queue,
+                               Stack<Integer> stack,
                                int startIndex)
     {
         int combsCounter = 0;
         if (sum < 0) { return 0; }
         if (sum == 0)
         {
-            System.out.println(Arrays.toString(queue.toArray()));
+            System.out.println(Arrays.toString(stack.toArray()));
             return 1;
         }
 
         for (int i = startIndex; i < coins.length; i++)
         {
             int c = coins[i];
-            queue.push(c);
-            combsCounter += all_comb(sum - c, coins, queue, i);
-            queue.pop();
+            stack.push(c);
+            combsCounter += all_comb(sum - c, coins, stack, i);
+            stack.pop();
         }
         return combsCounter;
     }
@@ -71,7 +71,7 @@ public class ChangeMachine
             System.out.println();
         }
         {
-            int[] coins = { 1, 2, 5, 10, 25 };
+            int[] coins = { 1, 5, 10, 25 };
             int combsCounter = all_comb(63, coins, new Stack<Integer>(), 0);
             System.out.println("******");
             System.out.println(combsCounter);
@@ -79,7 +79,7 @@ public class ChangeMachine
             System.out.println();
         }
         {
-            int[] coins = { 1, 2, 5, 10, 25 };
+            int[] coins = { 1, 5, 10, 25 };
             int combsCounter = all_comb(25, coins, new Stack<Integer>(), 0);
             System.out.println("******");
             System.out.println(combsCounter);
