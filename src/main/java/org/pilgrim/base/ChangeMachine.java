@@ -9,7 +9,7 @@ public class ChangeMachine
     static public int all_comb(int sum,
                                int[] coins,
                                Stack<Integer> queue,
-                               int st)
+                               int startIndex)
     {
         int combsCounter = 0;
         if (sum < 0) { return 0; }
@@ -19,15 +19,9 @@ public class ChangeMachine
             return 1;
         }
 
-        int startIndex = Math.abs(Arrays.binarySearch(coins, st));
-
-        for (int i = st; i < coins.length; i++)
+        for (int i = startIndex; i < coins.length; i++)
         {
             int c = coins[i];
-            if (st > c)
-            {
-                continue;
-            }
             queue.push(c);
             combsCounter += all_comb(sum - c, coins, queue, i);
             queue.pop();
