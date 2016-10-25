@@ -86,13 +86,5 @@ public class ChangeMachine
             System.out.println("======");
             System.out.println();
         }
-        {
-            int[] coins = { 5, 10, 25 };
-            int combsCounter = all_comb(65, coins, new Stack<Integer>(), 0);
-            System.out.println("******");
-            System.out.println(combsCounter);
-            System.out.println("======");
-            System.out.println();
-        }
     }
 }
