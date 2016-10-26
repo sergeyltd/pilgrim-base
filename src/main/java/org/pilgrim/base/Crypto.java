@@ -8,6 +8,7 @@ import java.util.Set;
 
 public class Crypto {
 
+	/// EFAB QEB QOBXPRB FK QEB XQQFZ
 	static Map<String, String> mapEn = new HashMap<>();
 	static Map<String, String> mapDe = new HashMap<>();
 	static {
@@ -55,21 +56,39 @@ public class Crypto {
 	}
 
 	public static void main(String[] args) {
-		Scanner scan = new Scanner(System.in);
-		while (true) {
-			String str = scan.nextLine();
-			if (!str.isEmpty()) {
-				if(str.charAt(0)=='1')
-				{
-					String encrypted = crypt(str, mapEn);
-					System.out.println("encrypted: " + encrypted);
+		decrypt();
+//		Scanner scan = new Scanner(System.in);
+//		while (true) {
+//			String str = scan.nextLine();
+//			if (!str.isEmpty()) {
+//				if (str.charAt(0) == '1') {
+//					String encrypted = crypt(str, mapEn);
+//					System.out.println("encrypted: " + encrypted);
+//				}
+//				if (str.charAt(0) == '2') {
+//					String decrypted = crypt(str, mapDe);
+//					System.out.println("decrypted: " + decrypted);
+//				}
+//			}
+//		}
+	}
+
+	public static void decrypt() {
+		// String str = "coo iye xohd wyxnkii dokmrobc";
+		String str = "EFAB QEB QOBXPRB FK QEB XQQFZ".toLowerCase();
+
+		char[] charArray = str.toCharArray();
+		for (int i = 0; i < 26; i++) {
+			StringBuilder sb = new StringBuilder();
+			for (char ch : charArray) {
+				if (ch < 'a') {
+					sb.append(ch);
+					continue;
 				}
-				if(str.charAt(0)=='2')
-				{
-					String decrypted = crypt(str, mapDe);
-					System.out.println("decrypted: " + decrypted);
-				}
+				int ch2 = (ch + i - 'a') % 26 + 'a';
+				sb.append((char) ch2);
 			}
+			System.out.println(sb);
 		}
 	}
 
