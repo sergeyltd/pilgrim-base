@@ -143,6 +143,34 @@ public class BSTree
         }
         findKthNode(node.right, k, t, an);
     }
+    
+    public static Node findKthNodeDecending(Node node,
+                                   int k)
+    {
+        if (k < 0) { return null; }
+        int[] t = { 0 };
+        Node[] an = new Node[1];
+        findKthNodeDecending(node, k, t, an);
+        return an[0];
+    }
+    
+    private static void findKthNodeDecending(Node node,
+                                    int k,
+                                    int[] t,
+                                    Node[] an)
+    {
+        if (node == null) { return; }
+        if (k <= t[0]) { return; }
+        
+        findKthNodeDecending(node.right, k, t, an);
+        t[0]++;
+        if (k == t[0])
+        {
+            an[0] = node;
+            return;
+        }
+        findKthNodeDecending(node.left, k, t, an);
+    }
 
     // Driver program to test above functions
     public static void main(String[] args)

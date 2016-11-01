@@ -80,4 +80,61 @@ public class BSTreeTest
         Node node = BSTree.findKthNode(root, 8);
         assertEquals(30, node.data);
     }
+
+    //////////////////////////////////////////////////////////////////
+    @Test
+    public void testFindKthNodeDecending1()
+    {
+        Node node = BSTree.findKthNodeDecending(root, 1);
+        assertEquals(30, node.data);
+    }
+
+    @Test
+    public void testFindKthNodeDecending2()
+    {
+        Node node = BSTree.findKthNodeDecending(root, 2);
+        assertEquals(20, node.data);
+    }
+
+    @Test
+    public void testFindKthNodeDecending3()
+    {
+        Node node = BSTree.findKthNodeDecending(root, 3);
+        assertEquals(18, node.data);
+    }
+
+    @Test
+    public void testFindKthNodeDecending4()
+    {
+        Node node = BSTree.findKthNodeDecending(root, 4);
+        assertEquals(16, node.data);
+    }
+
+    @Test
+    public void testFindKthNodeDecending5()
+    {
+        Node node = BSTree.findKthNodeDecending(root, 5);
+        assertEquals(12, node.data);
+    }
+
+    @Test
+    public void testFindKthNodeDecending6()
+    {
+        Node node = BSTree.findKthNodeDecending(root, 6);
+        assertEquals(10, node.data);
+    }
+
+    @Test
+    public void testFindKthNodeDecending7()
+    {
+        Node node = BSTree.findKthNodeDecending(root, 7);
+        assertEquals(5, node.data);
+    }
+
+    @Test
+    public void testFindKthNodeDecending8()
+    {
+        Node node = BSTree.findKthNodeDecending(root, 8);
+        assertEquals(2, node.data);
+    }
 }
