@@ -1,5 +1,8 @@
 package org.pilgrim.base;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 public class BSTree
 {
     class Node
@@ -11,6 +14,16 @@ public class BSTree
         {
             data = d;
             left = right = parent = null;
+        }
+
+        @Override
+        public String toString()
+        {
+            StringBuilder builder = new StringBuilder();
+            builder.append("[");
+            builder.append(data);
+            builder.append("]");
+            return builder.toString();
         }
     }
 
@@ -143,9 +156,9 @@ public class BSTree
         }
         findKthNode(node.right, k, t, an);
     }
-    
+
     public static Node findKthNodeDecending(Node node,
-                                   int k)
+                                            int k)
     {
         if (k < 0) { return null; }
         int[] t = { 0 };
@@ -153,15 +166,15 @@ public class BSTree
         findKthNodeDecending(node, k, t, an);
         return an[0];
     }
-    
+
     private static void findKthNodeDecending(Node node,
-                                    int k,
-                                    int[] t,
-                                    Node[] an)
+                                             int k,
+                                             int[] t,
+                                             Node[] an)
     {
         if (node == null) { return; }
         if (k <= t[0]) { return; }
-        
+
         findKthNodeDecending(node.right, k, t, an);
         t[0]++;
         if (k == t[0])
@@ -170,6 +183,66 @@ public class BSTree
             return;
         }
         findKthNodeDecending(node.left, k, t, an);
+    }
+
+    public static void levelPrinter(Node node)
+    {
+        if (null == node) { return; }
+
+        Queue<Node> q = new LinkedList<>();
+        q.add(node);
+        while (!q.isEmpty())
+        {
+            Queue<Node> ql = new LinkedList<>();
+            while (!q.isEmpty())
+            {
+                Node poll = q.poll();
+                System.out.print(poll);
+                if (null != poll.left)
+                {
+                    ql.add(poll.left);
+                }
+                if (null != poll.right)
+                {
+                    ql.add(poll.right);
+                }
+            }
+            System.out.println();
+            q = ql;
+        }
+    }
+
+    public static void printRightEdge(Node node)
+    {
+        if (null == node) { return; }
+
+        LinkedList<Node> q = new LinkedList<>();
+        q.add(node);
+        while (!q.isEmpty())
+        {
+            LinkedList<Node> ql = new LinkedList<>();
+
+            if (!q.isEmpty())
+            {
+                Node last = q.getLast();
+                System.out.print(last);
+            }
+
+            while (!q.isEmpty())
+            {
+                Node poll = q.poll();
+                if (null != poll.left)
+                {
+                    ql.add(poll.left);
+                }
+                if (null != poll.right)
+                {
+                    ql.add(poll.right);
+                }
+            }
+            System.out.println();
+            q = ql;
+        }
     }
 
     // Driver program to test above functions
@@ -206,5 +279,7 @@ public class BSTree
         root = tree2.insert(root, 5);
         root = tree2.insert(root, 2);
 
+        levelPrinter(root);
+        printRightEdge(root);
     }
 }
