@@ -2,7 +2,6 @@ import edu.princeton.cs.algs4.QuickUnionUF;
 //import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
 public class Percolation {
-
     private QuickUnionUF grid;
     // control open closed sites
     private boolean[][] sites;
