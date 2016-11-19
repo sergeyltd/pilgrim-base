@@ -15,7 +15,38 @@ public class RotatedSortedArray
                 i++;
             }
 
-            if (a[i] <= a[j]) { return a[i]; }
+            if (a[i] <= a[j])
+            {
+                break;
+            }
+
+            int m = (i + j) / 2;
+            if (a[m] >= a[i])
+            {
+                i = m + 1;
+            }
+            else
+            {
+                j = m;
+            }
+        }
+        return (i + a.length / 2) % a.length;
+    }
+
+    public int findMinIndex(int[] a)
+    {
+        int i = 0;
+        int j = a.length - 1;
+
+        while (i <= j)
+        {
+            // handle cases like [3, 1, 2, 3]
+            while (i != j || a[i] == a[j])
+            {
+                i++;
+            }
+
+            if (a[i] <= a[j]) { return i; }
 
             int m = (i + j) / 2;
             if (a[m] >= a[i])

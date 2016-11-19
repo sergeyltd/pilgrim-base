@@ -5,14 +5,14 @@ import java.util.Queue;
 
 public class BSTree
 {
-    class Node
+    public static class Node
     {
-        int  data;
+        int  val;
         Node left, right, parent;
 
         Node(int d)
         {
-            data = d;
+            val = d;
             left = right = parent = null;
         }
 
@@ -21,7 +21,7 @@ public class BSTree
         {
             StringBuilder builder = new StringBuilder();
             builder.append("[");
-            builder.append(data);
+            builder.append(val);
             builder.append("]");
             return builder.toString();
         }
@@ -50,7 +50,7 @@ public class BSTree
 
             Node temp = null;
             /* 2. Otherwise, recur down the tree */
-            if (data <= node.data)
+            if (data <= node.val)
             {
                 temp = insert(node.left, data);
                 node.left = temp;
@@ -96,12 +96,12 @@ public class BSTree
 
         while (t != null)
         {
-            if (n.data < t.data)
+            if (n.val < t.val)
             {
                 succ = t;
                 t = t.left;
             }
-            else if (n.data > t.data)
+            else if (n.val > t.val)
             {
                 t = t.right;
             }
@@ -114,7 +114,7 @@ public class BSTree
     }
 
     /*
-     * Given a non-empty binary search tree, return the minimum data value found
+     * Given a non-empty binary search tree, return the minimum val value found
      * in that tree. Note that the entire tree does not need to be searched.
      */
     Node minValue(Node node)
@@ -261,7 +261,7 @@ public class BSTree
         suc = tree.inOrderSuccessor(root, temp);
         if (suc != null)
         {
-            System.out.println("Inorder successor of " + temp.data + " is " + suc.data);
+            System.out.println("Inorder successor of " + temp.val + " is " + suc.val);
         }
         else
         {
@@ -281,5 +281,16 @@ public class BSTree
 
         levelPrinter(root);
         printRightEdge(root);
+        
+        TreeSerialization serializator = new TreeSerialization();
+        
+        String serializeBFS = serializator.serializeBFS(root);
+        System.out.println(serializeBFS);
+        
+        String serialize = serializator.serialize(root);
+        System.out.println(serialize);
+        
+        Node newRoot = serializator.deserializeBFS(serializeBFS);
+        System.out.println(serializator.serializeBFS(newRoot));
     }
 }
