@@ -30,7 +30,7 @@ public class LRUCache2 {
             addFirst(node);
             return node.val.intValue();
         }
-    }
+    } 
 
     public void set(int key, int value) {
         Integer okey = new Integer(key);

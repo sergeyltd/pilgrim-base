@@ -3,6 +3,7 @@ package org.pilgrim.base;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+
 public class LRUCache {
     static int c = 0;
     LinkedHashMap<Integer, Integer> queue;

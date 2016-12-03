@@ -12,7 +12,7 @@ class Node {
         this.key = key;
         this.value = value;
     }
-}
+} 
 
 public class LRUCache3 {
     int capacity;
