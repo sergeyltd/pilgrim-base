@@ -1,4 +1,7 @@
 package org.pilgrim.base;
+
+import java.util.Stack;
+
 /**
  * Definition for binary tree
  * public class TreeNode {
@@ -10,20 +13,41 @@ package org.pilgrim.base;
  */
 
 public class BSTIterator {
+    TreeNode        node;
+    Stack<TreeNode> stack = new Stack<>();
 
-    TreeNode root;
-    public BSTIterator(TreeNode root) {
-        this.root = root;
+    public BSTIterator(TreeNode root)
+    {
+        this.node = root;
     }
 
     /** @return whether we have a next smallest number */
-    public boolean hasNext() {
-        
+    public boolean hasNext()
+    {
+        return !stack.isEmpty() || null != node;
     }
 
     /** @return the next smallest number */
-    public int next() {
-        
+    public int next()
+    {
+        int res = -1;
+        while (hasNext())
+        {
+            if (null != node)
+            {
+                stack.push(node);
+                node = node.left;
+            }
+            else
+            {
+                node = stack.pop();
+                //visit
+                res = node.val;
+                node = node.right;
+                break;
+            }
+        }
+        return res;
     }
 }
 
