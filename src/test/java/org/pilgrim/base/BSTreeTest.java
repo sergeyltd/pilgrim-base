@@ -29,56 +29,56 @@ public class BSTreeTest
     public void testFindKthNode1()
     {
         Node node = BSTree.findKthNode(root, 1);
-        assertEquals(2, node.data);
+        assertEquals(2, node.val);
     }
 
     @Test
     public void testFindKthNode2()
     {
         Node node = BSTree.findKthNode(root, 2);
-        assertEquals(5, node.data);
+        assertEquals(5, node.val);
     }
 
     @Test
     public void testFindKthNode3()
     {
         Node node = BSTree.findKthNode(root, 3);
-        assertEquals(10, node.data);
+        assertEquals(10, node.val);
     }
 
     @Test
     public void testFindKthNode4()
     {
         Node node = BSTree.findKthNode(root, 4);
-        assertEquals(12, node.data);
+        assertEquals(12, node.val);
     }
 
     @Test
     public void testFindKthNode5()
     {
         Node node = BSTree.findKthNode(root, 5);
-        assertEquals(16, node.data);
+        assertEquals(16, node.val);
     }
 
     @Test
     public void testFindKthNode6()
     {
         Node node = BSTree.findKthNode(root, 6);
-        assertEquals(18, node.data);
+        assertEquals(18, node.val);
     }
 
     @Test
     public void testFindKthNode7()
     {
         Node node = BSTree.findKthNode(root, 7);
-        assertEquals(20, node.data);
+        assertEquals(20, node.val);
     }
 
     @Test
     public void testFindKthNode8()
     {
         Node node = BSTree.findKthNode(root, 8);
-        assertEquals(30, node.data);
+        assertEquals(30, node.val);
     }
 
     //////////////////////////////////////////////////////////////////
@@ -86,55 +86,55 @@ public class BSTreeTest
     public void testFindKthNodeDecending1()
     {
         Node node = BSTree.findKthNodeDecending(root, 1);
-        assertEquals(30, node.data);
+        assertEquals(30, node.val);
     }
 
     @Test
     public void testFindKthNodeDecending2()
     {
         Node node = BSTree.findKthNodeDecending(root, 2);
-        assertEquals(20, node.data);
+        assertEquals(20, node.val);
     }
 
     @Test
     public void testFindKthNodeDecending3()
     {
         Node node = BSTree.findKthNodeDecending(root, 3);
-        assertEquals(18, node.data);
+        assertEquals(18, node.val);
     }
 
     @Test
     public void testFindKthNodeDecending4()
     {
         Node node = BSTree.findKthNodeDecending(root, 4);
-        assertEquals(16, node.data);
+        assertEquals(16, node.val);
     }
 
     @Test
     public void testFindKthNodeDecending5()
     {
         Node node = BSTree.findKthNodeDecending(root, 5);
-        assertEquals(12, node.data);
+        assertEquals(12, node.val);
     }
 
     @Test
     public void testFindKthNodeDecending6()
     {
         Node node = BSTree.findKthNodeDecending(root, 6);
-        assertEquals(10, node.data);
+        assertEquals(10, node.val);
     }
 
     @Test
     public void testFindKthNodeDecending7()
     {
         Node node = BSTree.findKthNodeDecending(root, 7);
-        assertEquals(5, node.data);
+        assertEquals(5, node.val);
     }
 
     @Test
     public void testFindKthNodeDecending8()
     {
         Node node = BSTree.findKthNodeDecending(root, 8);
-        assertEquals(2, node.data);
+        assertEquals(2, node.val);
     }
 }
