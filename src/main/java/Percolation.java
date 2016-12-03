@@ -1,9 +1,8 @@
-import edu.princeton.cs.algs4.QuickUnionUF;
-//import edu.princeton.cs.algs4.WeightedQuickUnionUF;
+
+import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
 public class Percolation {
-    private QuickUnionUF grid;
-    // control open closed sites
+    private WeightedQuickUnionUF grid;
     private boolean[][] sites;
     private int siteSize;
     // n*n positions plus top and botton position
@@ -19,11 +18,14 @@ public class Percolation {
     /**
      * NxN matrix: initial state all blocked
      */
-    public Percolation(int N) {
-        siteSize = N;
-        gridSize = N * N + 2;
-        sites = new boolean[N][N];
-        grid = new QuickUnionUF(gridSize);
+    public Percolation(int n) {
+        if (n <= 0) {
+            throw new IllegalArgumentException("n should be > than 0");
+        }
+        siteSize = n;
+        gridSize = n * n + 2;
+        sites = new boolean[n][n];
+        grid = new WeightedQuickUnionUF(gridSize);
     }
 
     /**

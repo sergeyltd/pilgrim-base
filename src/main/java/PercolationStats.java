@@ -57,10 +57,10 @@ public class PercolationStats {
 
     public static void main(String[] args) {
         Out out = new Out();
-        int N = Integer.parseInt(args[0]);
-        int T = Integer.parseInt(args[1]);
+        int n = Integer.parseInt(args[0]);
+        int t = Integer.parseInt(args[1]);
 
-        PercolationStats ps = new PercolationStats(N, T);
+        PercolationStats ps = new PercolationStats(n, t);
 
         double mean = ps.mean();
         double stddev = ps.stddev();
