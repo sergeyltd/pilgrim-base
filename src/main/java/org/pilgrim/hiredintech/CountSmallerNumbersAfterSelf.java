@@ -72,6 +72,13 @@ public class CountSmallerNumbersAfterSelf {
             int[] a = { 6, 5, 5, 6, 6, 6, 1, 1 };
             List<Integer> list = countSmaller(a);
             System.out.println(list);
+        }{
+            int[] a = new int[1000000];
+            for (int i = 0; i < a.length; i++) {
+                a[a.length-i-1]=i;
+            }
+            List<Integer> list = countSmaller(a);
+            System.out.println(list.subList(0, 100));
         }
 //        {
 //            Scanner sc = new Scanner(System.in);
