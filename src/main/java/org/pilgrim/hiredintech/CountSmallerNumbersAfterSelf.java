@@ -22,7 +22,8 @@ Return the array [2, 1, 1, 0].
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Scanner;
+
+import org.apache.commons.lang3.time.StopWatch;
 
 public class CountSmallerNumbersAfterSelf {
     public static List<Integer> countSmaller(int[] nums) {
@@ -44,6 +45,19 @@ public class CountSmallerNumbersAfterSelf {
             }
         }
         Collections.reverse(res);
+        return res;
+    }
+
+    public static List<Integer> countSmallerNxN(int[] nums) {
+        ArrayList<Integer> res = new ArrayList<>();
+        for (int i = 0; i < nums.length; i++) {
+            int t = nums[i];
+            int count = 0;
+            for (int j = i + 1; j < nums.length; j++) {
+                count += t > nums[j] ? 1 : 0;
+            }
+            res.add(count);
+        }
         return res;
     }
 
@@ -72,24 +86,39 @@ public class CountSmallerNumbersAfterSelf {
             int[] a = { 6, 5, 5, 6, 6, 6, 1, 1 };
             List<Integer> list = countSmaller(a);
             System.out.println(list);
-        }{
+        }
+        {
             int[] a = new int[1000000];
             for (int i = 0; i < a.length; i++) {
-                a[a.length-i-1]=i;
+                a[a.length - i - 1] = i;
             }
-            List<Integer> list = countSmaller(a);
-            System.out.println(list.subList(0, 100));
+            {
+                StopWatch t = new StopWatch();
+                t.start();
+                List<Integer> list = countSmaller(a);
+                t.stop();
+                System.out.println(t.getTime());
+                System.out.println(list.subList(0, 100));
+            }
+            {
+                StopWatch t = new StopWatch();
+                t.start();
+                List<Integer> list = countSmallerNxN(a);
+                t.stop();
+                System.out.println(t.getTime());
+                System.out.println(list.subList(0, 100));
+            }
         }
-//        {
-//            Scanner sc = new Scanner(System.in);
-//            int n = sc.nextInt();
-//            int[] a = new int[n];
-//            for (int i = 0; i < a.length; i++) {
-//                a[i] = sc.nextInt();
-//            }
-//            sc.close();
-//            List<Integer> list = countSmaller(a);
-//            System.out.println(list);
-//        }
+        // {
+        // Scanner sc = new Scanner(System.in);
+        // int n = sc.nextInt();
+        // int[] a = new int[n];
+        // for (int i = 0; i < a.length; i++) {
+        // a[i] = sc.nextInt();
+        // }
+        // sc.close();
+        // List<Integer> list = countSmaller(a);
+        // System.out.println(list);
+        // }
     }
 }
