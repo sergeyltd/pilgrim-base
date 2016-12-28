@@ -97,7 +97,7 @@ public class CountSmallerNumbersAfterSelf {
                 t.start();
                 List<Integer> list = countSmaller(a);
                 t.stop();
-                System.out.println("O(n*lg(n))" + t.getTime());
+                System.out.println("O(n*lg(n))=" + t.getTime());
                 System.out.println(list.subList(0, 100));
             }
             {
@@ -105,7 +105,7 @@ public class CountSmallerNumbersAfterSelf {
                 t.start();
                 List<Integer> list = countSmallerNxN(a);
                 t.stop();
-                System.out.println("O(n*n)" + t.getTime());
+                System.out.println("O(n*n)=" + t.getTime());
                 System.out.println(list.subList(0, 100));
             }
         }
