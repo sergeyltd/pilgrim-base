@@ -88,7 +88,7 @@ public class LFUCache {
         return res;
     }
 
-    public void set(int key, int value) {
+    public void put(int key, int value) {
         if (0 >= capacity) {
             return;
         }
