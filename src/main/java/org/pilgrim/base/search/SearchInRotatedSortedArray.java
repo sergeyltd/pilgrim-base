@@ -1,4 +1,4 @@
-package org.pilgrim.base;
+package org.pilgrim.base.search;
 
 public class SearchInRotatedSortedArray
 {
