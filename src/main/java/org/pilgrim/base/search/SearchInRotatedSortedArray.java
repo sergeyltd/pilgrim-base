@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 package org.pilgrim.base.search;
+=======
+package org.pilgrim.base;
+>>>>>>> branch 'master' of https://github.com/sergeyltd/pilgrim-base.git
 
 public class SearchInRotatedSortedArray
 {
