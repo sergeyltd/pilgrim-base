@@ -58,5 +58,6 @@ public class StringPermutationWithoutRepeats {
 	public static void main(String[] args) {
 		StringPermutationWithoutRepeats repeats = new StringPermutationWithoutRepeats();
 		repeats.permutation("aabc");
+		repeats.permutation("aaabc");
 	}
 }
