@@ -21,6 +21,11 @@ public class FMProcessorCapitalOne extends FMProcessor {
         return new String[] { "Transaction Date", "Posted Date", "Card No.", "Description", "Category", "Debit",
                 "Credit" };
     }
+    
+    @Override
+    protected String getBankName() {
+        return "CapitalOne";
+    }
 
     @Override
     public List<TransactModel> process(File file) {
@@ -29,14 +34,15 @@ public class FMProcessorCapitalOne extends FMProcessor {
         try (final Reader reader = new FileReader(file);
                 final CSVParser parser = new CSVParser(reader, CSVFormat.EXCEL.withHeader());) {
             parser.forEach(record -> {
-                TransactModel model = new TransactModel();
+                TransactModel model = createTransactModel();
+                model.setBankName(getBankName());
                 model.setTransactionDate(toDate(record.get(0), sdf));
                 model.setPostedDate(toDate(record.get(1), sdf));
                 model.setCardInfo(record.get(2));
                 model.setDescription(record.get(3));
                 model.setCategory(record.get(4));
-                model.setDebit(toBigDecimal(record.get(5)));
-                model.setCredit(toBigDecimal(record.get(6)));
+                model.setDebit(toBigDecimal(record.get(6)));
+                model.setCredit(toBigDecimal(record.get(5)));
                 list.add(model);
             });
         } catch (IOException e) {

@@ -1,11 +1,17 @@
 package org.pilgrim.finantial;
 
+import static java.math.BigDecimal.ROUND_DOWN;
+import static java.util.Calendar.MONTH;
+import static java.util.Calendar.YEAR;
+
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.math.BigDecimal;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -79,12 +85,23 @@ public class FMService {
         for (TransactModel model : dataWithoutCategory) {
             String category = dm.predict(model);
             model.setCategory(category);
-            System.out.println(model);
+            // System.out.println(model);
         }
 
         // Map<String, TransactModel> map =
         // list.stream().collect(Collectors.toMap(x->x.getCategory(), x->x));
 
+        {
+            Map<Object, Double> map2 = list.stream().collect(Collectors.groupingBy(x -> x.getCategory(),
+                    Collectors.summingDouble(x -> x.getCredit().doubleValue())));
+
+            Set<Entry<Object, Double>> entrySet = map2.entrySet();
+
+            for (Entry<Object, Double> entry : entrySet) {
+                System.out.println(entry.getKey() + ": " + entry.getValue());
+            }
+        }
+        System.out.println("========================================");
         {
             Map<Object, Double> map2 = list.stream().collect(Collectors.groupingBy(x -> x.getCategory(),
                     Collectors.summingDouble(x -> x.getCredit().doubleValue())));
@@ -106,6 +123,66 @@ public class FMService {
                 System.out.println(entry.getKey() + ": " + entry.getValue());
             }
         }
+        System.out.println("========================================");
+        {
+            Map<Object, Double> map2 = list.stream().collect(Collectors.groupingBy(x -> {
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(x.getTransactionDate());
+                return calendar.get(YEAR);
+            }, Collectors.summingDouble(x -> x.getDebit().doubleValue())));
+
+            Set<Entry<Object, Double>> entrySet = map2.entrySet();
+
+            for (Entry<Object, Double> entry : entrySet) {
+                System.out.println(entry.getKey() + ": " + entry.getValue());
+            }
+        }
+        System.out.println("========================================");
+        {
+            Map<Object, Map<Object, Double>> map2 = list.stream().collect(Collectors.groupingBy(x -> {
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(x.getTransactionDate());
+                return calendar.get(YEAR);
+            }, Collectors.groupingBy(x -> x.getCategory(),
+                    Collectors.summingDouble(x -> x.getCredit().doubleValue()))));
+
+            Set<Entry<Object, Map<Object, Double>>> entrySet = map2.entrySet();
+
+            for (Entry<Object, Map<Object, Double>> entry : entrySet) {
+                System.out.println(entry.getKey());
+                Map<Object, Double> value = entry.getValue();
+
+                Set<Entry<Object, Double>> entrySet2 = value.entrySet();
+                for (Entry<Object, Double> entry2 : entrySet2) {
+                    System.out.println("     " + entry2.getKey() + ": " + entry2.getValue());
+                }
+            }
+        }
+        System.out.println("========================================");
+        {
+            Map<Object, Map<Object, Map<Object, Double>>> map2 = list.stream().collect(Collectors.groupingBy(x -> {
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(x.getTransactionDate());
+                return calendar.get(YEAR);
+            }, Collectors.groupingBy(x -> {
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(x.getTransactionDate());
+                return calendar.get(MONTH);
+            }, Collectors.groupingBy(x -> x.getCategory(),
+                    Collectors.summingDouble(x -> x.getCredit().doubleValue()*100/100
+                            )))));
+
+            String json = GsonHelper.toJson(map2);
+            System.out.println(json);
+            
+        }
+        System.out.println("========================================");
+        // System.out.println("========================================");
+        // {
+        // list.forEach(System.out::println);
+        // }
+        
+        System.err.println(new BigDecimal(12770.00000001).setScale(2, ROUND_DOWN).doubleValue());
     }
 
     private List<TransactModel> getCorrectionModels() {

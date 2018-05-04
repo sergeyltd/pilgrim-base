@@ -25,13 +25,19 @@ public class FMProcessorChase extends FMProcessor {
     }
     
     @Override
+    protected String getBankName() {
+        return "Chase";
+    }
+    
+    @Override
     public List<TransactModel> process(File file) {
         List<TransactModel> list = new ArrayList<>();
 
         try (final Reader reader = new FileReader(file);
                 final CSVParser parser = new CSVParser(reader, CSVFormat.EXCEL.withHeader());) {
             parser.forEach(record -> {
-                TransactModel model = new TransactModel();
+                TransactModel model = createTransactModel();
+                model.setBankName(getBankName());
                 model.setTransactionDate(toDate(record.get(1), sdf));
                 model.setPostedDate(toDate(record.get(1), sdf));
                 model.setDescription(record.get(3));

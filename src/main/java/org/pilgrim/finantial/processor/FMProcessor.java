@@ -29,6 +29,14 @@ public abstract class FMProcessor {
         return list;
     }
 
+    protected TransactModel createTransactModel() {
+        TransactModel model = new TransactModel();
+        model.setBankName(getBankName());
+        return model;
+    }
+
+    abstract protected String getBankName();
+
     abstract protected String[] getHeaders();
 
     public boolean canProcess(File file) {
@@ -42,7 +50,7 @@ public abstract class FMProcessor {
         return false;
     }
 
-    public List<TransactModel> process(File file){
+    public List<TransactModel> process(File file) {
         return Collections.emptyList();
     }
 
@@ -75,7 +83,6 @@ public abstract class FMProcessor {
         }
         return true;
     }
-    
 
     protected static Date toDate(String str, SimpleDateFormat sdf) {
         try {
