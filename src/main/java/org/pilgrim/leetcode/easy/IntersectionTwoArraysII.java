@@ -2,6 +2,7 @@ package org.pilgrim.leetcode.easy;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -28,18 +29,16 @@ import java.util.stream.IntStream;
 public class IntersectionTwoArraysII {
 
 	public static void main(String[] args) {
-		int[] a = {1,2,2,3};
-		int[] b = {2,2};
-		System.out.println(Arrays.toString(intersect(a,b)));
+		int[] a = { 1, 2, 2, 3 };
+		int[] b = { 2, 2 };
+		System.out.println(Arrays.toString(intersect(a, b)));
 
 	}
 
 	public static int[] intersect(int[] a, int[] b) {
 		// Arrays.asList(Arrays.stream(a).boxed().toArray(Integer[]::new));
-		Map<Integer, Integer> m1 = Arrays.stream(a).boxed().collect(Collectors.toList()).stream()
-				.collect(Collectors.groupingBy(x -> x, Collectors.summingInt(x -> 1)));
-		Map<Integer, Integer> m2 = Arrays.stream(b).boxed().collect(Collectors.toList()).stream()
-				.collect(Collectors.groupingBy(x -> x, Collectors.summingInt(x -> 1)));
+		Map<Integer, Integer> m1 = groupToMap(a);
+		Map<Integer, Integer> m2 = groupToMap(b);
 
 		if (m1.size() > m2.size()) {
 			Map<Integer, Integer> t = m1;
@@ -48,26 +47,38 @@ public class IntersectionTwoArraysII {
 		}
 
 		List<Integer> list = new ArrayList<>();
-		
+
 		Iterator<Map.Entry<Integer, Integer>> iterator = m1.entrySet().iterator();
 		while (iterator.hasNext()) {
-			Entry<Integer, Integer> next = iterator.next();
+			Map.Entry<Integer, Integer> next = iterator.next();
 
 			Integer key = next.getKey();
-			if(m2.containsKey(key)){
+			if (m2.containsKey(key)) {
 				Integer v1 = next.getValue();
 				Integer v2 = m2.get(key);
-				
+
 				int minValue = Math.min(v1, v2);
-				for(int i=0; i<minValue; i++){
+				for (int i = 0; i < minValue; i++) {
 					list.add(key);
 				}
-				
+
 				m2.remove(key);
 				iterator.remove();
 			}
 		}
-		
-		return list.stream().flatMapToInt(x->IntStream.of(x.intValue())).toArray();
+
+		return list.stream().flatMapToInt(x -> IntStream.of(x.intValue())).toArray();
+	}
+
+	private static Map<Integer, Integer> groupToMap(int[] a) {
+		Map<Integer, Integer> map = new HashMap<>();
+		for (int i : a) {
+			Integer count = map.get(i);
+			if(null == count){
+				count = 0;				
+			}
+			map.put(i, ++count);
+		}
+		return map;
 	}
 }
