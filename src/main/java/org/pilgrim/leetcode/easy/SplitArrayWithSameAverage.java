@@ -26,32 +26,66 @@ import org.apache.commons.lang3.time.StopWatch;
  */
 
 public class SplitArrayWithSameAverage {
-	
+
 	public boolean splitArraySameAverage2(int[] a) {
 		if (null == a || a.length <= 0) {
 			return false;
 		}
-		
+
 		int n = a.length;
-		
+
 		long sum = 0;
 		for (int i : a) {
 			sum += i;
 		}
-		
+
 		long tSum = 0;
-		for (int i = 0; i < a.length-1; i++) {
+		for (int i = 0; i < a.length - 1; i++) {
 			tSum += a[i];
 			long rSum = sum - tSum;
-			
+
 			// If averages of arr[0...i] and arr[i+1..n-1]
-	        // are same. To avoid floating point problems
-	        // we compare "lsum*(n-i+1)" and "rsum*(i+1)"
-	        // instead of "lsum/(i+1)" and "rsum/(n-i+1)"
-	        if (tSum*(n-i-1) == rSum*(i+1))
-	        {
-	        	return true;
-	        }
+			// are same. To avoid floating point problems
+			// we compare "lsum*(n-i+1)" and "rsum*(i+1)"
+			// instead of "lsum/(i+1)" and "rsum/(n-i+1)"
+			if (tSum * (n - i - 1) == rSum * (i + 1)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean splitArraySameAverage3(int[] a) {
+		if (null == a || a.length <= 0) {
+			return false;
+		}
+
+		int n = a.length;
+
+		long sum = 0;
+		for (int i : a) {
+			sum += i;
+		}
+
+		for (int i = 0; i < a.length; i++) {
+			for (int j = 0; j < i+1; j++) {
+				System.out.print(a[j]);
+			}
+			System.out.println();
+		}
+
+		long tSum = 0;
+		for (int i = 0; i < a.length - 1; i++) {
+			tSum += a[i];
+			long rSum = sum - tSum;
+
+			// If averages of arr[0...i] and arr[i+1..n-1]
+			// are same. To avoid floating point problems
+			// we compare "lsum*(n-i+1)" and "rsum*(i+1)"
+			// instead of "lsum/(i+1)" and "rsum/(n-i+1)"
+			if (tSum * (n - i - 1) == rSum * (i + 1)) {
+				return true;
+			}
 		}
 		return false;
 	}
@@ -60,7 +94,7 @@ public class SplitArrayWithSameAverage {
 		if (null == a || a.length <= 0) {
 			return false;
 		}
-		
+
 		Arrays.sort(a);
 
 		List<Integer> b = new ArrayList<Integer>();
@@ -74,8 +108,8 @@ public class SplitArrayWithSameAverage {
 
 	private boolean util(List<Integer> a, List<Integer> b) {
 		boolean res = false;
-//		System.out.println(Arrays.toString(a.toArray()));
-//		System.out.println(Arrays.toString(b.toArray()));
+		// System.out.println(Arrays.toString(a.toArray()));
+		// System.out.println(Arrays.toString(b.toArray()));
 		int n = a.size();
 		int m = b.size();
 		if (m == 0 || n > m) {
@@ -87,15 +121,15 @@ public class SplitArrayWithSameAverage {
 				double bV = avg(b);
 
 				res = aV == bV;
-				
-				if(aV > bV){
+
+				if (aV > bV) {
 					System.out.println(Arrays.toString(a.toArray()));
 					System.out.println(Arrays.toString(b.toArray()));
 
 					return false;
 				}
-				
-				if(res){
+
+				if (res) {
 					return res;
 				}
 			}
@@ -119,15 +153,19 @@ public class SplitArrayWithSameAverage {
 
 	public static void main(String[] args) throws InterruptedException {
 		SplitArrayWithSameAverage arrayWithSameAverage = new SplitArrayWithSameAverage();
-		System.out.println(arrayWithSameAverage.splitArraySameAverage2(new int[] {1, 5, 7, 2, 0}));
-		//System.out.println(arrayWithSameAverage.splitArraySameAverage2(new int[] { 1, 2, 3, 4, 5, 6, 7, 8 }));
-		StopWatch watch = new StopWatch();
-		watch.start();
-		//System.out.println(arrayWithSameAverage.splitArraySameAverage2(new int[] {1, 0, 7, 2, 5}));
-		System.out.println(arrayWithSameAverage.splitArraySameAverage(new int[] { 84,44,32,42,26,26,87,65,12,95,68,41,6,72,8,15,66,55,71,79,6 }));
-		watch.stop();
-		System.out.println(watch.getTime());
-		
-		//System.out.println(arrayWithSameAverage.splitArraySameAverage(new int[] { 84,44,32,42,26,26,87,65,12,95,68,41,6,72 }));
+		System.out.println(arrayWithSameAverage.splitArraySameAverage3(new int[] { 1, 5, 7, 2, 0 }));
+//		// System.out.println(arrayWithSameAverage.splitArraySameAverage2(new
+//		// int[] { 1, 2, 3, 4, 5, 6, 7, 8 }));
+//		StopWatch watch = new StopWatch();
+//		watch.start();
+//		// System.out.println(arrayWithSameAverage.splitArraySameAverage2(new
+//		// int[] {1, 0, 7, 2, 5}));
+//		System.out.println(arrayWithSameAverage.splitArraySameAverage(
+//				new int[] { 84, 44, 32, 42, 26, 26, 87, 65, 12, 95, 68, 41, 6, 72, 8, 15, 66, 55, 71, 79, 6 }));
+//		watch.stop();
+//		System.out.println(watch.getTime());
+//
+//		// System.out.println(arrayWithSameAverage.splitArraySameAverage(new
+//		// int[] { 84,44,32,42,26,26,87,65,12,95,68,41,6,72 }));
 	}
 }
