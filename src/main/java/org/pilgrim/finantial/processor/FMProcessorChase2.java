@@ -46,9 +46,9 @@ public class FMProcessorChase2 extends FMProcessor {
                 model.setDescription(record.get(2));
                 String amount = record.get(3);
                 if (null != amount && amount.startsWith("-")) {
-                    model.setDebit(toBigDecimal(amount));
-                } else if (null != amount) {
                     model.setCredit(toBigDecimal(amount));
+                } else if (null != amount) {
+                    model.setDebit(toBigDecimal(amount));
                 }
                 list.add(model);
             });

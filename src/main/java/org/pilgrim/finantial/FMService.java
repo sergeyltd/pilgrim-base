@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +23,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.apache.commons.io.FileUtils;
@@ -67,6 +69,19 @@ public class FMService {
                 list.addAll(optional.get().process(file));
             }
         }
+        
+//        list = list.stream().filter(x-> !x.getDescription().startsWith("\\QOnline Transfer from CHK ...\\E\\d{4}\\Q transaction#: \\E\\d{8,}")).collect(Collectors.toSet());
+        
+        // List for avoid these transactions
+        List<Pattern> regexs = new ArrayList<>();
+        regexs.add(Pattern.compile("\\QOnline Transfer from CHK ...\\E\\d{4}\\Q transaction#: \\E\\d{8,}"));
+        regexs.add(Pattern.compile("\\QOnline Transfer to CHK ...\\E\\d{4}\\Q transaction#:  \\E\\d{8,}.*"));
+        //regexs.add(Pattern.compile("\\QOnline Payment \\E\\d{8,}\\Q To CAPITAL ONE \\E.*"));
+        //regexs.add(Pattern.compile("\\QHOME DEPOT       ONLINE PMT \\E\\d{8,}.*"));
+                
+        list = list.stream().filter(s -> !regexs.stream().anyMatch(r -> r.matcher(s.getDescription()).find())).collect(Collectors.toSet());
+        
+        //Online Payment 7110427652 To CAPITAL ONE 05/01
 
         List<TransactModel> dataForTraining = list.stream().filter(
                 item -> StringUtils.isNotBlank(item.getCategory()) /* && item.getDebit().equals(BigDecimal.ZERO) */)
@@ -92,6 +107,8 @@ public class FMService {
             model.setCategory(category);
             // System.out.println(model);
         }
+        
+        updateCategodyAfterPredictions(list);
 
         // Map<String, TransactModel> map =
         // list.stream().collect(Collectors.toMap(x->x.getCategory(), x->x));
@@ -205,6 +222,38 @@ public class FMService {
         // }
 
         System.err.println(new BigDecimal(12770.00000001).setScale(2, ROUND_DOWN).doubleValue());
+    }
+    
+    Map<Pattern, String> regexs = new HashMap<>();
+    {
+        regexs.put(Pattern.compile("\\QCITY OF BELLEVUE GOLF\\E.*"), "Entertainment");
+        regexs.put(Pattern.compile("\\QSMITH BROTHERS FARMS\\E.*"), "Merchandise/Grocery");
+        regexs.put(Pattern.compile("\\QPIKE PLACE AT THE COMM\\E.*"), "Dining");
+        regexs.put(Pattern.compile("\\QJING JING ASIAN MARKET\\E.*"), "Merchandise/Grocery");
+        regexs.put(Pattern.compile("\\QFRED\\E.*\\QMEYER\\E.*"), "Merchandise/Grocery");
+        regexs.put(Pattern.compile("\\QWHOLEFDS\\E.*"), "Merchandise/Grocery");
+        regexs.put(Pattern.compile("\\QTRADER JOE\\E.*"), "Merchandise/Grocery");
+        regexs.put(Pattern.compile("\\QCOSTCO WHSE\\E.*"), "Merchandise/Grocery");
+        regexs.put(Pattern.compile("\\QTARGET\\E.*"), "Merchandise/Grocery");
+        regexs.put(Pattern.compile("\\QFOODSHION\\E.*"), "Dining");
+        regexs.put(Pattern.compile("\\QSAFEWAY\\E.*"), "Merchandise/Grocery");
+        regexs.put(Pattern.compile("\\QLEETCODE.COM\\E.*"), "School/Classes");
+        regexs.put(Pattern.compile("\\QQFC\\E.*"), "Merchandise/Grocery");
+        regexs.put(Pattern.compile("\\QWAL\\E.*\\QMART\\E.*"), "Merchandise/Grocery");
+        regexs.put(Pattern.compile("\\QEUROPEAN GROCERY\\E.*"), "Merchandise/Grocery");
+    }
+
+    private void updateCategodyAfterPredictions(Set<TransactModel> list) {
+        list.forEach(
+            model -> {
+                Optional<Entry<Pattern, String>> optional = regexs.entrySet()
+                        .stream()
+                        .filter(x -> x.getKey().matcher(model.getDescription()).find())
+                        .findFirst();
+                if(optional.isPresent()) {
+                    model.setCategory(optional.get().getValue());
+                }
+            });
     }
 
     private List<TransactModel> getCorrectionModels() {

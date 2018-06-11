@@ -43,8 +43,8 @@ public class FMProcessorCiti extends FMProcessor {
                     model.setTransactionDate(toDate(record.get(1), sdf));
                     model.setPostedDate(toDate(record.get(1), sdf));
                     model.setDescription(record.get(2));
-                    model.setDebit(toBigDecimal(record.get(3)));
-                    model.setCredit(toBigDecimal(record.get(4)));
+                    model.setCredit(toBigDecimal(record.get(3)));
+                    model.setDebit(toBigDecimal(record.get(4)));
                     list.add(model);
                 }
             });

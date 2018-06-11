@@ -2,7 +2,12 @@ package org.pilgrim.finantial.processor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Optional;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
 import org.pilgrim.finantial.model.TransactModel;
@@ -12,6 +17,17 @@ import org.pilgrim.finantial.model.TrieNode;
 public class DecisionMaker {
 
     Trie trie = new Trie();
+    
+    Map<Pattern, String> regexs = new HashMap<>();
+    {
+        regexs.put(Pattern.compile("\\QOnline Payment \\E\\d{8,}\\Q To TOYOTA FINANCIAL SERVICES - LOAN \\E.*"), "Gas/Automotive");
+        regexs.put(Pattern.compile("\\QOnline Payment \\E\\d{8,}\\Q To AT&T Mobility \\E.*"), "Phone/Cable");
+        regexs.put(Pattern.compile("\\QCITI CARD ONLINE PAYMENT\\E.*"), "Payment/Credit");
+        regexs.put(Pattern.compile("\\QOnline Payment \\E\\d{8,}\\Q To CAPITAL ONE \\E.*"), "Payment/Credit");
+        regexs.put(Pattern.compile("\\QBK OF AMER MC    ONLINE PMT \\E.*"), "Payment/Credit");
+        regexs.put(Pattern.compile("\\QSAMMAMISH CHILDR\\E.*"), "School/Classes"); 
+        regexs.put(Pattern.compile("\\QHOME DEPOT       ONLINE PMT \\E\\d{8,}.*"), "Payment/Credit");
+    }
 
     public void clear() {
         trie = new Trie();
@@ -23,6 +39,14 @@ public class DecisionMaker {
     }
 
     public String predict(TransactModel model) {
+        
+        if("Chase Cheking".equals(model.getBankName())) {
+            Optional<Entry<Pattern, String>> optional = regexs.entrySet().stream().filter(x -> x.getKey().matcher(model.getDescription()).find()).findFirst();
+            if(optional.isPresent()) {
+                return optional.get().getValue();
+            }
+        }
+        
         String category = "unknown";
         TrieNode node = trie.searchPrefix(model.getDescription());
 
