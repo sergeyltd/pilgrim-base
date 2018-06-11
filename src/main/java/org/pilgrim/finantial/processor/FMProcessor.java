@@ -17,9 +17,13 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.pilgrim.finantial.model.TransactModel;
 
-public abstract class FMProcessor {
+public abstract class FMProcessor implements Comparable<FMProcessor> {
 
     private String id = this.getClass().getCanonicalName();
+
+    protected int getPriority() {
+        return 0;
+    }
 
     private Set<String> getSupportedHeaders() {
         Set<String> list = new HashSet<>();
@@ -95,10 +99,15 @@ public abstract class FMProcessor {
 
     protected static BigDecimal toBigDecimal(String val) {
         try {
+            val = val.replace("$", "");
             return new BigDecimal(val).abs();
         } catch (Exception e) {
         }
         return BigDecimal.ZERO;
     }
 
+    @Override
+    public int compareTo(FMProcessor o) {
+        return Integer.compare(this.getPriority(), o.getPriority());
+    }
 }

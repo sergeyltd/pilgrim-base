@@ -17,6 +17,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
@@ -31,22 +32,25 @@ import org.pilgrim.finantial.processor.FMProcessor;
 import org.pilgrim.finantial.processor.FMProcessorBankAmerica;
 import org.pilgrim.finantial.processor.FMProcessorCapitalOne;
 import org.pilgrim.finantial.processor.FMProcessorChase;
+import org.pilgrim.finantial.processor.FMProcessorChase2;
 import org.pilgrim.finantial.processor.FMProcessorCiti;
+import org.pilgrim.finantial.processor.FMProcessorHomeDepot;
 
 import com.google.gson.reflect.TypeToken;
 
 public class FMService {
 
     private String path;
-    private Set<FMProcessor> processors = new HashSet<>(Arrays.asList(new FMProcessor[] { new FMProcessorCapitalOne(),
-            new FMProcessorBankAmerica(), new FMProcessorChase(), new FMProcessorCiti() }));
+    private Set<FMProcessor> processors = new HashSet<>(Arrays.asList(
+            new FMProcessor[] { new FMProcessorCapitalOne(), new FMProcessorBankAmerica(), new FMProcessorChase(),
+                    new FMProcessorCiti(), new FMProcessorHomeDepot(), new FMProcessorChase2() }));
 
     private FMService(String path) {
         this.path = path;
     }
 
     public static FMService newInstance() {
-        return new FMService("C:\\Users\\segoncha\\Downloads\\fin\\2017");
+        return new FMService("C:\\Users\\segoncha\\Downloads\\fin\\2018");
     }
 
     public void load() {
@@ -56,11 +60,12 @@ public class FMService {
     }
 
     private void processFiles(File[] listFiles) {
-        List<TransactModel> list = Collections.synchronizedList(new ArrayList<>());
+        Set<TransactModel> list = Collections.synchronizedSet(new HashSet<>());
         for (File file : listFiles) {
-            List<FMProcessor> procs = processors.stream().filter(pr -> pr.canProcess(file))
-                    .collect(Collectors.toList());
-            procs.forEach(pr -> list.addAll(pr.process(file)));
+            Optional<FMProcessor> optional = processors.stream().sorted().filter(pr -> pr.canProcess(file)).findFirst();
+            if (optional.isPresent()) {
+                list.addAll(optional.get().process(file));
+            }
         }
 
         List<TransactModel> dataForTraining = list.stream().filter(
@@ -160,28 +165,45 @@ public class FMService {
         }
         System.out.println("========================================");
         {
-            Map<Object, Map<Object, Map<Object, Double>>> map2 = list.stream().collect(Collectors.groupingBy(x -> {
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime(x.getTransactionDate());
-                return calendar.get(YEAR);
-            }, Collectors.groupingBy(x -> {
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime(x.getTransactionDate());
-                return calendar.get(MONTH);
-            }, Collectors.groupingBy(x -> x.getCategory(),
-                    Collectors.summingDouble(x -> x.getCredit().doubleValue()*100/100
-                            )))));
+            Map<Object, Map<Object, Map<Object, Double>>> map2 = list.stream()
+                    .filter(x -> x.getCredit().doubleValue() > 0).collect(Collectors.groupingBy(x -> {
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.setTime(x.getTransactionDate());
+                        return calendar.get(YEAR);
+                    }, Collectors.groupingBy(x -> {
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.setTime(x.getTransactionDate());
+                        return calendar.get(MONTH);
+                    }, Collectors.groupingBy(x -> x.getCategory(),
+                            Collectors.summingDouble(x -> x.getCredit().doubleValue() * 100 / 100)))));
 
             String json = GsonHelper.toJson(map2);
             System.out.println(json);
-            
+
+        }
+        System.out.println("========================================");
+        {
+            Map<Object, Map<Object, Map<Object, List<TransactModel>>>> map2 = list.stream()
+                    .filter(x -> x.getCredit().doubleValue() > 0).collect(Collectors.groupingBy(x -> {
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.setTime(x.getTransactionDate());
+                        return calendar.get(YEAR);
+                    }, Collectors.groupingBy(x -> {
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.setTime(x.getTransactionDate());
+                        return calendar.get(MONTH);
+                    }, Collectors.groupingBy(x -> x.getCategory(), Collectors.toList()))));
+
+            String json = GsonHelper.toJson(map2);
+            System.out.println(json);
+
         }
         System.out.println("========================================");
         // System.out.println("========================================");
         // {
         // list.forEach(System.out::println);
         // }
-        
+
         System.err.println(new BigDecimal(12770.00000001).setScale(2, ROUND_DOWN).doubleValue());
     }
 

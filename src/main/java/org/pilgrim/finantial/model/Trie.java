@@ -41,7 +41,7 @@ public class Trie {
             {
                 t.isLeaf = true;
                 t.setWord(word);
-                t.getCategories().add(category);
+                t.setCategory(category);
             }
         }
     }

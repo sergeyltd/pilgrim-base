@@ -1,9 +1,7 @@
 package org.pilgrim.finantial.model;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 public class TrieNode {
     char ch;
@@ -11,10 +9,14 @@ public class TrieNode {
     boolean isLeaf;
     int deep;
     String word;
-    Set<String> categories = new HashSet<>();
+    String category;
 
-    public Set<String> getCategories() {
-        return categories;
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     protected void setCh(char ch) {
