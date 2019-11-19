@@ -5,7 +5,7 @@ import java.util.Date;
 
 import org.pilgrim.finantial.GsonHelper;
 
-public class TransactModel {
+public class TransactModel implements Comparable<TransactModel> {
     private Date transactionDate;
     private Date postedDate;
     private String cardInfo;
@@ -177,5 +177,10 @@ public class TransactModel {
         // builder.append("]");
         // return builder.toString();
         return GsonHelper.toJson(this);
+    }
+
+    @Override
+    public int compareTo(TransactModel o) {
+        return this.getTransactionDate().compareTo(o.getTransactionDate());
     }
 }

@@ -60,7 +60,7 @@ public class Twitter
         }
     }
 
-    Map<Integer, Set<Node>>    map       = new LinkedHashMap<>();
+    Map<Integer, Set<Node>>    mapTweet       = new LinkedHashMap<>();
     Map<Integer, Set<Integer>> mapFollow = new LinkedHashMap<>();
 
     /** Initialize your data structure here. */
@@ -73,11 +73,11 @@ public class Twitter
     public void postTweet(int userId,
                           int tweetId)
     {
-        Set<Node> list = map.get(userId);
+        Set<Node> list = mapTweet.get(userId);
         if (null == list)
         {
             list = new TreeSet<>();
-            map.put(userId, list);
+            mapTweet.put(userId, list);
         }
         Node node = new Node(tweetId);
         list.add(node);
@@ -87,7 +87,7 @@ public class Twitter
     public List<Integer> getNewsFeed(int userId)
     {
         Set<Node> tpm = new TreeSet<>();
-        Set<Node> list = map.get(userId);
+        Set<Node> list = mapTweet.get(userId);
         if (null != list)
         {
             tpm.addAll(list);
@@ -98,7 +98,7 @@ public class Twitter
         {
             for (Integer followeeId : set)
             {
-                Set<Node> list2 = map.get(followeeId);
+                Set<Node> list2 = mapTweet.get(followeeId);
                 if (null != list2)
                 {
                     tpm.addAll(list2);

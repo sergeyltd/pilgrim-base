@@ -200,7 +200,7 @@ public class FMService {
         }
         System.out.println("========================================");
         {
-            Map<Object, Map<Object, Map<Object, List<TransactModel>>>> map2 = list.stream()
+            Map<Object, Map<Object, Map<Object, Object>>> map2 = list.stream()
                     .filter(x -> x.getCredit().doubleValue() > 0).collect(Collectors.groupingBy(x -> {
                         Calendar calendar = Calendar.getInstance();
                         calendar.setTime(x.getTransactionDate());
@@ -209,7 +209,10 @@ public class FMService {
                         Calendar calendar = Calendar.getInstance();
                         calendar.setTime(x.getTransactionDate());
                         return calendar.get(MONTH);
-                    }, Collectors.groupingBy(x -> x.getCategory(), Collectors.toList()))));
+                    }, Collectors.groupingBy(x -> x.getCategory(), Collectors.collectingAndThen(Collectors.toList(), t -> {
+                        Collections.sort(t);
+                        return t;
+                        })))));
 
             String json = GsonHelper.toJson(map2);
             System.out.println(json);
@@ -241,6 +244,14 @@ public class FMService {
         regexs.put(Pattern.compile("\\QQFC\\E.*"), "Merchandise/Grocery");
         regexs.put(Pattern.compile("\\QWAL\\E.*\\QMART\\E.*"), "Merchandise/Grocery");
         regexs.put(Pattern.compile("\\QEUROPEAN GROCERY\\E.*"), "Merchandise/Grocery");
+        regexs.put(Pattern.compile("\\QIRS\\E.*\\QUSATAXPYMT\\E.*"), "Taxes");
+        regexs.put(Pattern.compile("\\QOnline\\E.*\\QPayment\\E.*\\d{8,}.*\\QTo NE SAMMAMISH SEWER & WATER\\E.*"), "Utilities");
+        regexs.put(Pattern.compile("\\QMB FINANCIAL     MTG PYMT\\E.*"), "Utilities");
+        regexs.put(Pattern.compile("\\QGETMEREGISTERED.COM\\E"), "Entertainment");
+        regexs.put(Pattern.compile("\\QPayment to Chase card ending in\\E.*"), "Payment/Credit");
+//        Payment to Chase card ending in 3865 04/02
+//        MB FINANCIAL     MTG PYMT                   PPD ID: 0361474915
+//        Online Payment 7057132634 To NE SAMMAMISH SEWER & WATER 04/12
     }
 
     private void updateCategodyAfterPredictions(Set<TransactModel> list) {
