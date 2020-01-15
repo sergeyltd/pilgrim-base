@@ -6,7 +6,7 @@ public class Sqrt {
 		double t = 0;
 		while (Math.abs(r - t) > ac) {
 			t = r;
-			r = (r + n / r) / 2d;
+			r = (r + n / r) / 2.0d;
 		}
 		return r;
 	}

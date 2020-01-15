@@ -2,7 +2,7 @@ package org.pilgrim.base;
 
 import java.util.ArrayList;
 
-public class Solution {
+public class IntPermutation {
 	public static String getPermutation(int n, int k) {
 
 		// initialize all numbers
@@ -40,6 +40,6 @@ public class Solution {
 	}
 	
 	public static void main(String[] args) {
-		System.out.println(getPermutation(5, 2));
+		System.out.println(getPermutation(5, 44));
 	}
 }
