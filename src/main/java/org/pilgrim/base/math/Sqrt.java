@@ -1,4 +1,4 @@
-package org.pilgrim.base;
+package org.pilgrim.base.math;
 
 public class Sqrt {
 	static public double sqrt2(double n, double ac) {
