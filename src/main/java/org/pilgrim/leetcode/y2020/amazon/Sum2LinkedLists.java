@@ -21,6 +21,14 @@ public class Sum2LinkedLists {
         }
 
     }
+  
+    static class ListNode {
+          int val;
+          ListNode next;
+          ListNode() {}
+          ListNode(int val) { this.val = val; }
+          ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+    }
 
     static class Node {
         public int val;
@@ -101,6 +109,44 @@ public class Sum2LinkedLists {
         }
 
         return res.next;
+    }
+    
+    // from leet code
+    public ListNode addTwoNumbers(ListNode n1, ListNode n2) {
+        if (n1 == null && n2 == null) {
+            return null;
+        }
+
+        ListNode res = new ListNode(0);
+        ListNode head = res;
+
+        int carry = 0;
+        while (n1 != null || n2 != null) {
+            int a = res.val;
+            if(n1 != null){
+                a += n1.val;
+                n1 = n1.next;
+            }
+            
+            if(n2 != null){
+                a += n2.val;
+                n2 = n2.next;
+            }
+            
+            res.val = a % 10;
+            carry = a / 10;
+            if(n1 != null || n2 != null){
+                res.next = new ListNode(carry);
+                res = res.next;
+            }
+        }
+        
+        if(carry > 0){
+            res.next = new ListNode(carry);
+            res = res.next;
+        }
+
+        return head;
     }
 
     public Node sum(Node n1, Node n2) {
