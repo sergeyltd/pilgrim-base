@@ -66,57 +66,16 @@ Follow up: Could you write a solution that runs in O(n) time and use only O(1) m
  */
 public class IntersectionTwoLinkedLists {
     public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
-        if(headA == null || headB == null){
-            return null;
+        ListNode pA = headA;
+        ListNode pB = headB;
+        while (pA != pB) {
+            pA = pA == null ? headB : pA.next;
+            pB = pB == null ? headA : pB.next;
         }
-        
-        int lengthA = len(headA);
-        int lengthB = len(headB);
-        
-        if(lengthA > lengthB){
-            int diff = lengthA - lengthB;
-            headA = shift(headA, diff);
-        }
-        else if(lengthA < lengthB){
-            int diff = lengthB - lengthA;
-            headB = shift(headB, diff);
-        }
-        
-        while(headA != null && headB != null){
-            
-            System.out.println("a=" + headA.val);
-            System.out.println("b=" + headB.val);
-            
-            if(headA == headB){
-                return headA;
-            }
-            
-            headA = headA.next;
-            headB = headB.next;
-        }
-        
-        return null;
-    }
-    
-    private static int len(ListNode node){
-        int length = 0;
-        while(node != null){
-            node = node.next;
-            length++;
-        }
-        
-        System.out.println(length);
-        
-        return length;
-    }
-    
-    private static ListNode shift(ListNode node, int d){
-        for(int i=0; i<d; i++){
-            node = node.next;
-        }
-        
-        System.out.println(node.val);
-        
-        return node;
+        return pA;
+        // Note: In the case lists do not intersect, the pointers for A and B
+        // will still line up in the 2nd iteration, just that here won't be
+        // a common node down the list and both will reach their respective ends
+        // at the same time. So pA will be NULL in that case.
     }
 }
