@@ -20,7 +20,7 @@ public class StringPermutation
         int n = str.length();
         if (n == 0)
         {
-            System.out.println(pref);
+            //System.out.println(pref);
             list.add(pref);
         }
         else
@@ -30,5 +30,10 @@ public class StringPermutation
                 permutation(pref + str.charAt(i), str.substring(0, i) + str.substring(i + 1, n));
             }
         }
+    }
+    
+    public static void main(String[] args) {
+        StringPermutation sp = new StringPermutation();
+        sp.permutation("hello");
     }
 }

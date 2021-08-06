@@ -10,7 +10,7 @@ public class MinRotatedSortedArray
         while (i <= j)
         {
             // handle cases like [3, 1, 2, 3]
-            while (i != j || a[i] == a[j])
+            while (i < j && a[i] == a[j])
             {
                 i++;
             }
@@ -28,5 +28,10 @@ public class MinRotatedSortedArray
             }
         }
         return -1;
+    }
+    
+    public static void main(String[] args) {
+        MinRotatedSortedArray mrsa = new MinRotatedSortedArray();
+        System.out.println(mrsa.findMin(new int[] {4,9,0,2,3}));
     }
 }
