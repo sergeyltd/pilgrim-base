@@ -92,9 +92,9 @@ public abstract class FMProcessor implements Comparable<FMProcessor> {
         try {
             return sdf.parse(str);
         } catch (ParseException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e.getMessage() + " " + str, e);
         }
-        return null;
+        //return null;
     }
 
     protected static BigDecimal toBigDecimal(String val) {

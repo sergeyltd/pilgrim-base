@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.nio.charset.Charset;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -27,6 +28,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.pilgrim.finantial.model.TransactModel;
 import org.pilgrim.finantial.processor.DecisionMaker;
@@ -35,6 +37,7 @@ import org.pilgrim.finantial.processor.FMProcessorBankAmerica;
 import org.pilgrim.finantial.processor.FMProcessorCapitalOne;
 import org.pilgrim.finantial.processor.FMProcessorChase;
 import org.pilgrim.finantial.processor.FMProcessorChase2;
+import org.pilgrim.finantial.processor.FMProcessorChase3;
 import org.pilgrim.finantial.processor.FMProcessorCiti;
 import org.pilgrim.finantial.processor.FMProcessorHomeDepot;
 
@@ -45,14 +48,15 @@ public class FMService {
     private String path;
     private Set<FMProcessor> processors = new HashSet<>(Arrays.asList(
             new FMProcessor[] { new FMProcessorCapitalOne(), new FMProcessorBankAmerica(), new FMProcessorChase(),
-                    new FMProcessorCiti(), new FMProcessorHomeDepot(), new FMProcessorChase2() }));
+                    new FMProcessorCiti(), new FMProcessorHomeDepot(), new FMProcessorChase2(), new FMProcessorChase3() }));
 
     private FMService(String path) {
         this.path = path;
     }
 
     public static FMService newInstance() {
-        return new FMService("C:\\Users\\segoncha\\Downloads\\fin\\2018");
+        //return new FMService("C:\\Users\\segoncha\\Downloads\\fin\\2018");
+        return new FMService("/Users/sergiy/Downloads/finance/");
     }
 
     public void load() {
@@ -99,7 +103,7 @@ public class FMService {
         // }
 
         List<TransactModel> dataWithoutCategory = list.stream().filter(
-                item -> StringUtils.isBlank(item.getCategory()) /* && item.getDebit().equals(BigDecimal.ZERO) */)
+                item -> StringUtils.isBlank(item.getCategory()) && item.getDebit().equals(BigDecimal.ZERO))
                 /* .filter(distinctByKey(p -> p.getDescription())) */.collect(Collectors.toList());
 
         for (TransactModel model : dataWithoutCategory) {
@@ -269,9 +273,10 @@ public class FMService {
 
     private List<TransactModel> getCorrectionModels() {
         try {
-            String content = FileUtils.readFileToString(new File(
-                    "C:\\Users\\segoncha\\git\\pilgrim-base\\src\\main\\resources\\finantial\\corrections.json"),
-                    Charset.forName("UTF-8"));
+            String content = IOUtils.toString(this.getClass().getResourceAsStream("/finantial/corrections.json"),"UTF-8");
+//            String content = FileUtils.readFileToString(new File(
+//                    "C:\\Users\\segoncha\\git\\pilgrim-base\\src\\main\\resources\\finantial\\corrections.json"),
+//                    Charset.forName("UTF-8"));
             Type listType = new TypeToken<ArrayList<TransactModel>>() {
             }.getType();
             return GsonHelper.fromJson(content, listType);

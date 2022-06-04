@@ -1,5 +1,10 @@
 package org.pilgrim.leetcode.chempionat;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * 809. Expressive Words
 User Accepted: 0
@@ -34,6 +39,16 @@ S and all words in words consist only of lowercase letters
 public class ExpressiveWords {
 	
     public int expressiveWords(String S, String[] words) {
+    	ArrayList<List<String>> f;
+    	new ArrayList<List<String>>();
+    	Map<String, String> map = new HashMap<>();
+    	
+    	for (Map.Entry<String, String> a : map) {
+			
+		}
+    	
+    	map.values().stream().lis
+    	
     	int res = 0;
     	for (String word : words) {
     		if(S.length() - word.length() < 2){
