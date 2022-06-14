@@ -54,7 +54,7 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 
-public class WordLedder {
+public class WordLadder {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
