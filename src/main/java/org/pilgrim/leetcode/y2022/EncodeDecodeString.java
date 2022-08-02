@@ -2,6 +2,7 @@ package org.pilgrim.leetcode.y2022;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.PriorityQueue;
 
 /***
  * 
@@ -55,6 +56,11 @@ public class EncodeDecodeString {
 	     * @return dcodes a single string to a list of strings
 	     */
 	    public List<String> decode(String str) {
+	    	
+	    	PriorityQueue<Pair<Integer, Integer>> mh = new PriorityQueue<>(Pair::getKey);
+	    	
+	    	String.class.getTypeName()
+	    	
 	        // Write your code here
 	        List<String> ans = new ArrayList<>();
 	        char[] sc = str.toCharArray();
