@@ -1,53 +1,51 @@
 package org.pilgrim.leetcode.y2022;
 
+import java.util.Arrays;
+
 /**
- * You are given an integer array coins representing coins of different denominations and an integer amount representing a total amount of money.
- * Return the fewest number of coins that you need to make up that amount. If that amount of money cannot be made up by any combination of the coins, return -1.
- * You may assume that you have an infinite number of each kind of coin.
+ * You are given an integer array coins representing coins of different
+ * denominations and an integer amount representing a total amount of money.
+ * Return the fewest number of coins that you need to make up that amount. If
+ * that amount of money cannot be made up by any combination of the coins,
+ * return -1. You may assume that you have an infinite number of each kind of
+ * coin.
  *
- * Note: here provided backtrack algorithm with big O by time in exponential O(S^n)
+ * Note: here provided bottom up dynamic solution algorithm with big O by time
+ * in exponential O(S * n)
  */
-public class CoinChange2 {	
+public class CoinChange2 {
 	public static void main(String[] args) {
 		CoinChange2 cc = new CoinChange2();
-		System.out.println(cc.coinChange(new int[] {1,3,4,5}, 7));
-	}
 
-	int globalMin = Integer.MAX_VALUE;
+		int max = 0;
+		for (int i = 1; i <= 100; i++) {
+			int count = cc.coinChange(new int[] { 1, 2, 3, 5, 10, 15, 20, 50, 100 }, i);
+			System.out.println("#" + i + ": " + count);
+
+			max = Math.max(max, count);
+		}
+
+		System.out.println("Max number of coins: " + max);
+	}
 
 	public int coinChange(int[] coins, int amount) {
 		if (coins == null || coins.length <= 0 || amount < 0 || coins.length > 12) {
 			return -1;
 		}
 
-		return helper(coins, amount, 0);
-	}
+		int[] dp = new int[amount + 1];
+		Arrays.fill(dp, amount + 1);
 
-	private int helper(int[] coins, int amount, int iteration) {
-		if (amount == 0) {
-			return iteration;
-		}
+		dp[0] = 0;
 
-		if (amount < 0) {
-			return -1;
-		}
-
-		if (iteration > globalMin) {
-			return -1;
-		}
-
-		int min = Integer.MAX_VALUE;
-		for (int i = 0; i < coins.length; i++) {
-			int count = helper(coins, amount - coins[i], iteration + 1);
-			if (count < 0) {
-				continue;
+		for (int a = 1; a < dp.length; a++) {
+			for (int c : coins) {
+				if (a - c >= 0) {
+					dp[a] = Math.min(dp[a], 1 + dp[a - c]);
+				}
 			}
-
-			min = Math.min(min, count);
-			globalMin = Math.min(min, globalMin);
 		}
 
-		int ans = min == Integer.MAX_VALUE ? -1 : min;
-		return ans;
+		return dp[amount] == amount + 1 ? -1 : dp[amount];
 	}
 }

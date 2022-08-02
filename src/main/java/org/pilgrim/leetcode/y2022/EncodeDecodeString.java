@@ -57,9 +57,7 @@ public class EncodeDecodeString {
 	     */
 	    public List<String> decode(String str) {
 	    	
-	    	PriorityQueue<Pair<Integer, Integer>> mh = new PriorityQueue<>(Pair::getKey);
-	    	
-	    	String.class.getTypeName()
+	    	PriorityQueue<Pair<Integer, Integer>> mh = new PriorityQueue<>(Pair::getKey);	    	
 	    	
 	        // Write your code here
 	        List<String> ans = new ArrayList<>();
