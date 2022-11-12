@@ -262,6 +262,75 @@ public class BSTree
         
         return isValidBST(root.left, min, root.val) && isValidBST(root.right, root.val, max);
     }
+    
+    public int maxDepth(TreeNode root) {
+        if(root == null){
+            return 0;
+        }
+        
+        return Math.max(maxDepth(root.left), maxDepth(root.right)) + 1;
+    }
+    
+    private boolean isBalancedHeightTree = true;
+    
+    public boolean isBalanced(TreeNode root) {
+        _maxDepth(root);
+        return isBalancedHeightTree;
+    }
+    
+    private int _maxDepth(TreeNode root){
+        if(root == null){
+            return 0;
+        }
+        
+        int left = maxDepth(root.left);
+        int right = maxDepth(root.right);
+        
+        if(Math.abs(left-right) > 1){
+            isBalancedHeightTree = false;
+        }
+        
+        return Math.max(left, right)+1;
+    }
+    
+    public boolean isSameTree(TreeNode p, TreeNode q) {
+        if(p == null && q == null)
+        {
+            return true;
+        }
+        
+        if(p == null)
+        {
+            return false;
+        }
+        
+        if(q == null)
+        {
+            return false;
+        }
+        
+        return p.val == q.val && isSameTree(p.left, q.left) && isSameTree(p.right, q.right);
+    }
+    
+    int diameter = 0;
+    
+    public int diameterOfBinaryTree(TreeNode root) {
+        __maxDepth(root);
+        return diameter;
+    }
+    
+    private int __maxDepth(TreeNode root){
+        if(root == null){
+            return 0;
+        }
+        
+        int left = maxDepth(root.left);
+        int right = maxDepth(root.right);
+        
+        diameter = Math.max(left+right, diameter);
+        
+        return Math.max(left, right)+1;
+    }
 
     // Driver program to test above functions
     public static void main(String[] args)
