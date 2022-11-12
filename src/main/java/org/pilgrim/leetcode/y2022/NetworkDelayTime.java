@@ -11,21 +11,25 @@ import java.util.Queue;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+/***
+You are given a network of n nodes, labeled from 1 to n.
+You are also given times, a list of travel times as directed edges times[i] = (ui, vi, wi),
+where ui is the source node, vi is the target node, and wi is the time it takes for a signal to travel from source to target.
+We will send a signal from a given node k. Return the minimum time it takes for all the n nodes to receive the signal.
+If it is impossible for all the n nodes to receive the signal, return -1.
+*/
+
 class NetworkDelayTime {
-	
+
 	public static void main(String[] args) {
-		
-		System.out.println("abc".substring(0,1));
-		
 		NetworkDelayTime networkDelayTime = new NetworkDelayTime();
-		
+
 		int[][] times = {{2,1,1},{2,3,1},{3,4,1}};
 		int n = 4;
 		int k = 2;
-		
+
 		System.out.println(networkDelayTime.networkDelayTime(times, n, k));
 		System.out.println(networkDelayTime.networkDelayTime2(times, n, k));
-		
 	}
 	
     Map<Integer, List<Pair<Integer, Integer>>> adj = new HashMap<>();
